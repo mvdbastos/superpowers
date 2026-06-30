@@ -12,16 +12,31 @@ Enable superpowers skills in [Hermes Agent](https://github.com/NousResearch/herm
 **Option A — Symlink (recommended, auto-updates with `git pull`):**
 
 ```bash
-git clone https://github.com/obra/superpowers.git ~/.hermes/superpowers
-ln -s ~/.hermes/superpowers/skills/* ~/.hermes/skills/
+git clone https://github.com/obra/superpowers.git ~/.skills/superpowers
+ln -s ~/.skills/superpowers/skills/* ~/.hermes/skills/
 ```
 
 **Windows (PowerShell):**
 ```powershell
-git clone https://github.com/obra/superpowers.git "$env:USERPROFILE\.hermes\superpowers"
-Get-ChildItem "$env:USERPROFILE\.hermes\superpowers\skills" -Directory | ForEach-Object {
+git clone https://github.com/obra/superpowers.git "$env:USERPROFILE\.skills\superpowers"
+Get-ChildItem "$env:USERPROFILE\.skills\superpowers\skills" -Directory | ForEach-Object {
     cmd /c mklink /J "$env:USERPROFILE\.hermes\skills\$($_.Name)" $_.FullName
 }
+```
+
+**Windows Native (PowerShell plain, multiple symlinks):**
+```powershell
+git clone https://github.com/obra/superpowers.git "$env:USERPROFILE\.skills\superpowers"
+Get-ChildItem "$env:USERPROFILE\.skills\superpowers\skills" -Directory | ForEach-Object {
+    cmd /c mklink /J "$env:LOCALAPPDATA\hermes\skills\superpowers\$($_.Name)" $_.FullName
+}
+```
+
+<!-- symlynk $env:USERPROFILE\.skills\superpowers to $env:LOCALAPPDATA\hermes\skills\superpowers -->
+**Windows Native (PowerShell grouped, single symlink):**
+```powershell
+git clone https://github.com/obra/superpowers.git "$env:USERPROFILE\.skills\superpowers"
+cmd /c mklink /J "$env:LOCALAPPDATA\hermes\skills\superpowers" "$env:USERPROFILE\.skills\superpowers\skills"
 ```
 
 **Option B — Copy (standalone, no git dependency after install):**
@@ -51,7 +66,7 @@ Load any skill in a chat session:
 If you used the symlink method:
 
 ```bash
-cd ~/.hermes/superpowers && git pull
+cd ~/.skills/superpowers && git pull
 ```
 
 Skills update instantly through the symlinks.
@@ -65,7 +80,7 @@ for skill in ~/.hermes/skills/*; do
 done
 
 # Optionally delete the clone
-rm -rf ~/.hermes/superpowers
+rm -rf ~/.skills/superpowers
 ```
 
 ## How it works
